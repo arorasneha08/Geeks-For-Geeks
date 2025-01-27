@@ -43,27 +43,28 @@ class GFG {
 
 class Solution {
     public int[] shortestPath(ArrayList<ArrayList<Integer>> adj, int src) {
-        int n = adj.size();
-        int distance[] = new int[n];
-        Arrays.fill(distance, Integer.MAX_VALUE); 
-        distance[src] = 0 ; 
+        int n = adj.size(); 
+        int distance[] = new int[n] ;
+        Arrays.fill(distance, Integer.MAX_VALUE) ;
+        distance[src]  = 0 ;
         
         Queue<Integer> q = new LinkedList<>();
-        q.offer(src);
+        q.offer(src) ;
         
         while(!q.isEmpty()){
-            int currNode = q.poll();
+            int curr = q.poll();
             
-            for(int adjNode : adj.get(currNode)){
-                if(distance[currNode] + 1 < distance[adjNode]){
-                    distance[adjNode] = distance[currNode]+1 ; 
+            for(int adjNode : adj.get(curr)){
+                if(distance[curr] + 1 < distance[adjNode]){
+                    distance[adjNode] = distance[curr] + 1 ; 
                     q.offer(adjNode); 
                 }
             }
         }
+        
         for(int i = 0 ; i<n ; i++){
-            if(distance [i] == Integer.MAX_VALUE){
-                distance[i] = -1  ;
+            if(distance[i] == Integer.MAX_VALUE){
+                distance[i] = -1 ; 
             }
         }
         return distance; 
