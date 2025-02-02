@@ -108,41 +108,34 @@ class GfG {
 // } Driver Code Ends
 
 
-// User function Template for Java
-
 /*
-class Node
-{
+class Node {
     int data;
     Node left, right;
 
-    Node(int item)
-    {
+    Node(int item) {
         data = item;
         left = right = null;
     }
 }
 */
 class Solution {
-    // Function to return the level order traversal of a tree.
     public ArrayList<ArrayList<Integer>> levelOrder(Node root) {
         Queue<Node> q = new LinkedList<>();
-        ArrayList<ArrayList<Integer>> res = new ArrayList<>(); 
         q.offer(root);
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
         
-        while(q.size() > 0){
-            ArrayList<Integer> list = new ArrayList<>(); 
-            for(int i = 0 ;i< q.size() ; i++){
-                Node curr = q.poll();
-                list.add(curr.data); 
-                if(curr.left != null){
-                    q.offer(curr.left); 
-                }
-                if(curr.right != null){
-                    q.offer(curr.right); 
-                }
+        while(!q.isEmpty()){
+            Node curr = q.poll();
+            ArrayList<Integer> arr = new ArrayList<>(); 
+            arr.add(curr.data); 
+            if(curr.left != null){
+                q.offer(curr.left);
             }
-            res.add(list) ; 
+            if(curr.right != null){
+                q.offer(curr.right);
+            } 
+            res.add(arr);
         }
         return res; 
     }
