@@ -105,9 +105,8 @@ class GfG {
 // } Driver Code Ends
 
 
-// User function Template for Java
-
-/*class Node {
+/*
+class Node {
     int data;
     Node left;
     Node right;
@@ -116,21 +115,22 @@ class GfG {
         left = null;
         right = null;
     }
-}*/
+}
+*/
 
 class Solution {
-    int getDiameter(Node root , int dia[]){
+    int dia = 0 ; 
+    int diameter(Node root){
+        height(root);
+        return dia ; 
+    }
+    int height(Node root) {
         if(root == null) return 0 ; 
-        int left = getDiameter(root.left, dia);
-        int right = getDiameter(root.right , dia);
+        int left = height(root.left);
+        int right = height(root.right); 
         
-        dia[0] = Math.max(dia[0] , left + right); 
+        dia = Math.max(dia , left + right);
         
         return Math.max(left , right) + 1 ; 
-    }
-    int diameter(Node root) {
-        int dia[] = new int[1];
-        getDiameter(root , dia); 
-        return dia[0]; 
     }
 }
