@@ -41,7 +41,20 @@ class Solution {
     public int findMaxSum(int arr[]) {
         int n = arr.length ; 
         int dp[] = new int[n]; 
-        Arrays.fill(dp , -1) ;
-        return func(n-1 , arr, dp) ; 
+        // Arrays.fill(dp , -1) ;
+        // return func(n-1 , arr, dp) ; 
+        
+        dp[0] = arr[0];
+        
+        for(int i = 1 ; i< n ; i++){
+            int pick = arr[i] ;
+            if(i >= 2){
+                pick += dp[i-2] ; 
+            }
+            int notpick = dp[i-1]; 
+            int max = Math.max(pick , notpick) ; 
+            dp[i] = max ;
+        }
+        return dp[n-1]; 
     }
 }
