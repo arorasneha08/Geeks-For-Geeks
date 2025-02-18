@@ -46,32 +46,62 @@ class Solution {
         return dp[index][target] = pick || notpick ; 
     }
     static boolean equalPartition(int arr[]) {
+        // int n = arr.length ;
+        // int totalSum = 0 ;
+        // for(int i = 0 ; i < n ; i++){
+        //     totalSum += arr[i]; 
+        // }
+        // int target = totalSum / 2; 
+        // boolean dp[][] = new boolean[n][target+1]; 
+        
+        // if(totalSum % 2 == 1) return false; 
+        // // return func(n-1 , target , arr, dp) ; 
+        
+        // for(int i = 0 ; i< n ;i++){
+        //     dp[i][0] = true ; 
+        // }
+        // if (arr[0] <= target) dp[0][arr[0]] = true;
+        
+        // for(int idx = 1 ; idx < n ;idx ++){
+        //     for(int tar = 1 ; tar <= target ; tar++){
+        //         boolean nottake = dp[idx-1][tar]; 
+        //         boolean take = false; 
+        //         if(arr[idx] <= tar){
+        //             take = dp[idx-1][tar - arr[idx]];  
+        //         }
+        //         dp[idx][tar] = (take || nottake) ; 
+        //     }
+        // }
+        // return dp[n-1][target]; 
+        
+        
         int n = arr.length ;
         int totalSum = 0 ;
         for(int i = 0 ; i < n ; i++){
             totalSum += arr[i]; 
         }
         int target = totalSum / 2; 
-        boolean dp[][] = new boolean[n][target+1]; 
+        boolean prev[] = new boolean[target+1]; 
         
         if(totalSum % 2 == 1) return false; 
-        // return func(n-1 , target , arr, dp) ; 
         
         for(int i = 0 ; i< n ;i++){
-            dp[i][0] = true ; 
+            prev[0] = true ; 
         }
-        if (arr[0] <= target) dp[0][arr[0]] = true;
+        if (arr[0] <= target) prev[arr[0]] = true;
         
         for(int idx = 1 ; idx < n ;idx ++){
+            boolean curr[] = new boolean[target+1]; 
             for(int tar = 1 ; tar <= target ; tar++){
-                boolean nottake = dp[idx-1][tar]; 
+                boolean nottake = prev[tar]; 
                 boolean take = false; 
                 if(arr[idx] <= tar){
-                    take = dp[idx-1][tar - arr[idx]];  
+                    take = prev[tar - arr[idx]];  
                 }
-                dp[idx][tar] = (take || nottake) ; 
+                curr[tar] = (take || nottake) ; 
             }
+            prev = curr ; 
         }
-        return dp[n-1][target]; 
+        return prev[target]; 
     }
 }
