@@ -17,7 +17,7 @@ class Driverclass {
             // calling ispar method of Paranthesis class
             // and printing "balanced" if it returns true
             // else printing "not balanced"
-            if (new Solution().isParenthesisBalanced(st) == true)
+            if (new Solution().isBalanced(st) == true)
                 System.out.println("true");
             else
                 System.out.println("false");
@@ -31,20 +31,17 @@ class Driverclass {
 
 
 class Solution {
-    static boolean isParenthesisBalanced(String s) {
-        int n = s.length(); 
-        Stack<Character> st = new Stack<>(); 
-        for(int i = 0 ; i<n ; i++){
-            if(s.charAt(i) == '{') st.push('}');
-            else if(s.charAt(i) == '(') st.push(')');
-            else if(s.charAt(i) == '[') st.push(']'); 
-            else if(st.isEmpty() || st.pop() != s.charAt(i)){
-                return false; 
-            }
+    static boolean isBalanced(String s) {
+        int n = s.length();
+        Stack<Character> st = new Stack<>();
+        for(int i = 0 ;  i< n ; i++){
+            char ch = s.charAt(i);
+            if(ch == '[') st.push(']');
+            else if(ch == '{') st.push('}');
+            else if(ch == '(') st.push(')'); 
+            else if(st.isEmpty() || st.pop() != ch) return false; 
         }
-        if(st.isEmpty()){
-            return true ;
-        }
+        if(st.isEmpty()) return true; 
         return false; 
     }
 }
