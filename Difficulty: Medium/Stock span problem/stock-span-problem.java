@@ -38,7 +38,6 @@ class Main {
 
 
 class Solution {
-    // Function to calculate the span of stock's price for all n days.
     public ArrayList<Integer> calculateSpan(int[] arr) {
         int n = arr.length ; 
         ArrayList<Integer> ans = new ArrayList<>(); 
