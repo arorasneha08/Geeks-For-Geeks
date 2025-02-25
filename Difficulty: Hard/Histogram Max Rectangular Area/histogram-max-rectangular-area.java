@@ -7,38 +7,24 @@ import java.util.*;
 
 // } Driver Code Ends
 class Solution {
-    public static int[] pse(int arr[] , int n){
-        Stack<Integer> st = new Stack<>();
-        int res[] = new int[n] ; 
-        for(int i = 0 ; i<n ; i++){
-            while(!st.isEmpty() && arr[st.peek()] >= arr[i]){
-                st.pop();
-            }
-            res[i] = st.isEmpty() ? -1 : st.peek();
-            st.push(i); 
-        }
-        return res ; 
-    } 
-    public static int[] nse(int arr[] , int n){
-        Stack<Integer> st = new Stack<>();
-        int res[] = new int[n] ; 
-        for(int i = n-1 ; i >= 0 ; i--){
-            while(!st.isEmpty() && arr[st.peek()] >= arr[i]){
-                st.pop();
-            }
-            res[i] = st.isEmpty() ? n : st.peek();
-            st.push(i); 
-        }
-        return res ; 
-    } 
     public static int getMaxArea(int arr[]) {
-        int n = arr.length ; 
-        int pse[] = pse(arr, n); 
-        int nse[] = nse(arr, n); 
+        int n = arr.length ;
+        Stack<Integer> st = new Stack<>();
         int maxArea = 0 ; 
-        for(int i = 0 ; i<n ; i++){
-            int width = nse[i] - pse[i] - 1; 
-            maxArea = Math.max(maxArea, width * arr[i]) ; 
+        for(int i = 0 ; i< n ; i++){
+            while(!st.isEmpty() && arr[st.peek()] >= arr[i]){
+                int height = arr[st.pop()]; 
+                int width = (st.isEmpty()) ? i : i - st.peek()-1 ; 
+                int area = height * width ;
+                maxArea = Math.max(area , maxArea); 
+            }
+            st.push(i); 
+        }
+        while(!st.isEmpty()){
+            int height = arr[st.pop()];
+            int width = (st.isEmpty()) ? n : n - st.peek()-1 ; 
+            int area = height * width ;
+            maxArea = Math.max(maxArea , area); 
         }
         return maxArea ; 
     }
