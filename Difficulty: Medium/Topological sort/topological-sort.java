@@ -54,32 +54,58 @@ class Main {
 // } Driver Code Ends
 
 
+
+
 class Solution {
-    
+    static void dfs(int node , ArrayList<ArrayList<Integer>> adj , int[] visited,Stack<Integer> st){
+        visited[node] = 1 ; 
+        for(int adjNode : adj.get(node)){
+            if(visited[adjNode] == 0){
+                dfs(adjNode , adj , visited, st); 
+            }
+        }
+        st.push(node); 
+    }
     static ArrayList<Integer> topologicalSort(ArrayList<ArrayList<Integer>> adj) {
-        int n = adj.size() ; 
-        int indegree[] = new int[n] ; 
-        for(int i= 0 ; i<n ; i++){
-            for(int adjNode : adj.get(i)){
-                indegree[adjNode]++ ; 
-            }
-        }
-        Queue<Integer> q = new LinkedList<>() ; 
-        for(int i = 0 ; i<n ; i++){
-            if(indegree[i] == 0){
-                q.offer(i); 
-            }
-        }
-        ArrayList<Integer> list = new ArrayList<>() ; 
-        while(!q.isEmpty()){
-            int node = q.poll() ;
-            list.add(node); 
+        // int n = adj.size() ; 
+        // int indegree[] = new int[n] ; 
+        // for(int i= 0 ; i<n ; i++){
+        //     for(int adjNode : adj.get(i)){
+        //         indegree[adjNode]++ ; 
+        //     }
+        // }
+        // Queue<Integer> q = new LinkedList<>() ; 
+        // for(int i = 0 ; i<n ; i++){
+        //     if(indegree[i] == 0){
+        //         q.offer(i); 
+        //     }
+        // }
+        // ArrayList<Integer> list = new ArrayList<>() ; 
+        // while(!q.isEmpty()){
+        //     int node = q.poll() ;
+        //     list.add(node); 
             
-            for(int adjNode : adj.get(node)){
-                indegree[adjNode]-- ; 
-                if(indegree[adjNode] == 0) q.offer(adjNode); 
+        //     for(int adjNode : adj.get(node)){
+        //         indegree[adjNode]-- ; 
+        //         if(indegree[adjNode] == 0) q.offer(adjNode); 
+        //     }
+        // }
+        // return list ; 
+        
+        int n = adj.size() ;
+        int[] visited = new int[n]; 
+        ArrayList<Integer> ans = new ArrayList<>() ; 
+        Stack<Integer> st = new Stack<>(); 
+        
+        for(int i = 0 ; i<n ; i++){
+            if(visited[i] == 0){
+                dfs(i, adj , visited , st); 
             }
         }
-        return list ; 
+        while(!st.isEmpty()){
+            ans.add(st.pop()); 
+        }
+        return ans ; 
+
     }
 }
