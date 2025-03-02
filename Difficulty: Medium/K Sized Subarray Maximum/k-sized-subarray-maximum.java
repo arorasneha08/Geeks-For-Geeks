@@ -28,7 +28,7 @@ public class Main {
             int idx = 0;
             for (int i : array) arr[idx++] = i;
             int k = Integer.parseInt(br.readLine());
-            ArrayList<Integer> res = new Solution().max_of_subarrays(arr, k);
+            ArrayList<Integer> res = new Solution().maxOfSubarrays(arr, k);
 
             // printing the elements of the ArrayList
             for (int i = 0; i < res.size(); i++) System.out.print(res.get(i) + " ");
@@ -40,29 +40,26 @@ public class Main {
 // } Driver Code Ends
 
 
-// User function template for JAVA
-
 class Solution {
-    public ArrayList<Integer> max_of_subarrays(int arr[], int k) {
-        Deque<Integer> q = new ArrayDeque<>();
+    public ArrayList<Integer> maxOfSubarrays(int arr[], int k) {
+        ArrayList<Integer> res = new ArrayList<>();
         int n = arr.length ; 
-        int ans[] = new int[n-k+1] ; 
+        int ans[] = new int[n-k+1]; 
         int index = 0 ; 
-        
-        for(int i = 0 ; i< n ; i++){
+        Deque<Integer> q = new LinkedList<>();
+        for(int i = 0; i < n ; i++){
             if(!q.isEmpty() && q.peek() == i-k){
                 q.pollFirst();
             }
             while(!q.isEmpty() && arr[i] > arr[q.peekLast()]){
-                q.pollLast(); 
+                q.pollLast();    
             }
-            q.offer(i); 
+            q.offer(i) ;
             if(i >= k-1){
                 ans[index++] = arr[q.peek()]; 
             }
         }
-        ArrayList<Integer> res = new ArrayList<>() ;
-        for(int i = 0 ; i<n-k+1 ; i++){
+        for(int i = 0; i < ans.length; i++){
             res.add(ans[i]); 
         }
         return res; 
