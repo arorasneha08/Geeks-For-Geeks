@@ -42,9 +42,28 @@ class Solution {
         int n1 = s1.length();
         int n2 = s2.length();
         int dp[][] = new int[n1+1][n2+1];
-        for(int row[] : dp){
-            Arrays.fill(row , -1); 
+        // for(int row[] : dp){
+        //     Arrays.fill(row , -1); 
+        // }
+        // return func(n1 , n2 , s1, s2, dp); 
+        
+        for(int i = 0 ; i <= n1 ; i++){
+            dp[i][0] = 0; 
         }
-        return func(n1 , n2 , s1, s2, dp); 
+        for(int j = 0 ; j <= n2 ; j++){
+            dp[0][j] = 0; 
+        }
+        
+        for(int index1 = 1 ; index1 <= n1 ; index1++){
+            for(int index2 = 1 ; index2 <= n2 ; index2 ++){
+                if(s1.charAt(index1-1) == s2.charAt(index2-1)){
+                    dp[index1][index2] = 1 + dp[index1-1][index2-1];  
+                }
+                else{
+                    dp[index1][index2] = Math.max(dp[index1-1][index2] , dp[index1][index2-1]); 
+                }
+            }
+        }
+        return dp[n1][n2];
     }
 }
