@@ -27,12 +27,14 @@ public class Main {
             for (int i : array) arr[idx++] = i;
 
             System.out.println(new Solution().minJumps(arr));
-            // System.out.println("~");
+            System.out.println("~");
         }
     }
 }
 
 // } Driver Code Ends
+
+
 
 
 class Solution {
@@ -50,7 +52,6 @@ class Solution {
                 farthest = Math.max(farthest , i + arr[i]); 
             }
             if (farthest == right) return -1; 
-            
             jumps ++ ; 
             left = right + 1; 
             right = farthest ; 
