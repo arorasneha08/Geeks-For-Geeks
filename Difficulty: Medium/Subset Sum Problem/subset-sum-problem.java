@@ -28,6 +28,8 @@ class GFG {
 // } Driver Code Ends
 
 
+
+
 // User function Template for Java
 
 class Solution {
@@ -49,9 +51,61 @@ class Solution {
         return dp[index][target] = (pick || notPick); 
     }
     static Boolean isSubsetSum(int arr[], int target) {
-        int n = arr.length; 
-        Boolean dp[][] = new Boolean[n][target+1] ; 
+        // using memoisation :- 
+        
+        // int n = arr.length; 
+        // Boolean dp[][] = new Boolean[n][target+1] ; 
 
-        return func(n-1 , target ,arr , dp); 
+        // return func(n-1 , target ,arr , dp); 
+        
+        // using tabulation :- 
+        
+        // int n = arr.length ; 
+        // Boolean dp[][] = new Boolean[n][target+1];
+        // for(Boolean row[] : dp){
+        //     Arrays.fill(row , false); 
+        // }
+        
+        // for(int i = 0 ; i< n ;i++){
+        //     dp[i][0] = true ; 
+        // }
+        // if (arr[0] <= target) dp[0][arr[0]] = true;
+        
+        // for(int idx = 1 ; idx < n ;idx ++){
+        //     for(int tar = 1 ; tar <= target ; tar++){
+        //         boolean nottake = dp[idx-1][tar]; 
+        //         boolean take = false; 
+        //         if(arr[idx] <= tar){
+        //             take = dp[idx-1][tar - arr[idx]];  
+        //         }
+        //         dp[idx][tar] = (take || nottake) ; 
+        //     }
+        // }
+        // return dp[n-1][target]; 
+        
+        // using space optimisation :-
+        
+        int n = arr.length ; 
+        Boolean prev[] = new Boolean[target+1];
+        Boolean curr[] = new Boolean[target+1] ; 
+        Arrays.fill(prev , false); 
+        Arrays.fill(curr , false); 
+        
+        prev[0] = curr[0] = true; 
+
+        if (arr[0] <= target) prev[arr[0]] = true;
+        
+        for(int idx = 1 ; idx < n ;idx ++){
+            for(int tar = 1 ; tar <= target ; tar++){
+                boolean nottake = prev[tar]; 
+                boolean take = false; 
+                if(arr[idx] <= tar){
+                    take = prev[tar - arr[idx]];  
+                }
+                curr[tar] = (take || nottake) ; 
+            }
+            prev = curr.clone(); 
+        }
+        return prev[target]; 
     }
 }
