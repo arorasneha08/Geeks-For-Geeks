@@ -24,6 +24,8 @@ class GFG {
 // } Driver Code Ends
 
 
+
+
 class Solution {
     public int func(int index , int arr[] , int dp[]){
         if(index == 0) return dp[index] = arr[index] ; 
@@ -44,17 +46,32 @@ class Solution {
         // Arrays.fill(dp , -1) ;
         // return func(n-1 , arr, dp) ; 
         
-        dp[0] = arr[0];
+        // dp[0] = arr[0];
         
+        // for(int i = 1 ; i< n ; i++){
+        //     int pick = arr[i] ;
+        //     if(i >= 2){
+        //         pick += dp[i-2] ; 
+        //     }
+        //     int notpick = dp[i-1]; 
+        //     int max = Math.max(pick , notpick) ; 
+        //     dp[i] = max ;
+        // }
+        // return dp[n-1]; 
+        
+        // space optimisaiton:- 
+        int prev = arr[0];
+        int prev2 = 0  ;
         for(int i = 1 ; i< n ; i++){
             int pick = arr[i] ;
             if(i >= 2){
-                pick += dp[i-2] ; 
+                pick += prev2 ; 
             }
-            int notpick = dp[i-1]; 
+            int notpick = prev ; 
             int max = Math.max(pick , notpick) ; 
-            dp[i] = max ;
+            prev2 = prev ; 
+            prev = max ;
         }
-        return dp[n-1]; 
+        return prev ; 
     }
 }
