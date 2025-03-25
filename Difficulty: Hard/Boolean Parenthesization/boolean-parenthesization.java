@@ -21,8 +21,6 @@ class GFG {
 // } Driver Code Ends
 
 
-// User function Template for Java
-
 class Solution {
     static int func(int i , int j ,boolean isTrue , String str, int dp[][][]){
         if (i > j) return 0;
