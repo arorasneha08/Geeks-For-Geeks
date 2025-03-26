@@ -50,7 +50,7 @@ class Solution {
     }
     static int mergeSort(int arr[] , int low , int high){
         int count = 0 ; 
-        if(low >= high) return count; 
+        if(low >= high) return 0; 
         int mid = (low + high)/2 ; 
         
         count += mergeSort(arr , low , mid);
