@@ -4,31 +4,29 @@ import java.lang.*;
 import java.util.*;
 
 class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
-        int t = Integer.parseInt(read.readLine());
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
 
         while (t-- > 0) {
+            int V = sc.nextInt();
+            int E = sc.nextInt();
             ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
-            int vertices = Integer.parseInt(read.readLine());
-            int edges = Integer.parseInt(read.readLine());
+            for (int i = 0; i < V; i++) adj.add(i, new ArrayList<Integer>());
 
-            for (int i = 0; i < vertices; i++) adj.add(i, new ArrayList<Integer>());
-
-            int p = 0;
-            for (int i = 1; i <= edges; i++) {
-                String s[] = read.readLine().trim().split("\\s+");
-                int u = Integer.parseInt(s[0]);
-                int v = Integer.parseInt(s[1]);
-                adj.get(u).add(v);
+            int[][] edges = new int[E][2];
+            for (int i = 0; i < E; i++) {
+                edges[i][0] = sc.nextInt();
+                edges[i][1] = sc.nextInt();
+                adj.get(edges[i][0]).add(edges[i][1]);
             }
 
-            ArrayList<Integer> res = new Solution().topologicalSort(adj);
+            ArrayList<Integer> res = new Solution().topoSort(V, edges);
 
-            if (check(adj, vertices, res) == true)
-                System.out.println("1");
+            if (check(adj, V, res) == true)
+                System.out.println("true");
             else
-                System.out.println("0");
+                System.out.println("false");
             System.out.println("~");
         }
     }
@@ -54,58 +52,40 @@ class Main {
 // } Driver Code Ends
 
 
-
-
 class Solution {
-    static void dfs(int node , ArrayList<ArrayList<Integer>> adj , int[] visited,Stack<Integer> st){
-        visited[node] = 1 ; 
-        for(int adjNode : adj.get(node)){
-            if(visited[adjNode] == 0){
-                dfs(adjNode , adj , visited, st); 
+    public static ArrayList<Integer> topoSort(int V, int[][] edges) {
+        List<List<Integer>> adj = new ArrayList<>();
+        int indegree[] = new int[V]; 
+        Queue<Integer> q = new LinkedList<>();
+        ArrayList<Integer> res= new ArrayList<>(); 
+        for(int i = 0 ; i < V ; i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int edge[] : edges){
+            int u = edge[0];
+            int v = edge[1] ;
+            adj.get(u).add(v);
+        }
+        for(int i = 0 ; i < V ; i++){
+            for(int adjNode : adj.get(i)){
+                indegree[adjNode] ++; 
             }
         }
-        st.push(node); 
-    }
-    static ArrayList<Integer> topologicalSort(ArrayList<ArrayList<Integer>> adj) {
-        // int n = adj.size() ; 
-        // int indegree[] = new int[n] ; 
-        // for(int i= 0 ; i<n ; i++){
-        //     for(int adjNode : adj.get(i)){
-        //         indegree[adjNode]++ ; 
-        //     }
-        // }
-        // Queue<Integer> q = new LinkedList<>() ; 
-        // for(int i = 0 ; i<n ; i++){
-        //     if(indegree[i] == 0){
-        //         q.offer(i); 
-        //     }
-        // }
-        // ArrayList<Integer> list = new ArrayList<>() ; 
-        // while(!q.isEmpty()){
-        //     int node = q.poll() ;
-        //     list.add(node); 
-            
-        //     for(int adjNode : adj.get(node)){
-        //         indegree[adjNode]-- ; 
-        //         if(indegree[adjNode] == 0) q.offer(adjNode); 
-        //     }
-        // }
-        // return list ; 
-        
-        int n = adj.size() ;
-        int[] visited = new int[n]; 
-        ArrayList<Integer> ans = new ArrayList<>() ; 
-        Stack<Integer> st = new Stack<>(); 
-        
-        for(int i = 0 ; i<n ; i++){
-            if(visited[i] == 0){
-                dfs(i, adj , visited , st); 
+        for(int i = 0 ; i < V; i++){
+            if(indegree[i] == 0){
+                q.offer(i); 
             }
         }
-        while(!st.isEmpty()){
-            ans.add(st.pop()); 
+        while(!q.isEmpty()){
+            int curr = q.poll();
+            res.add(curr); 
+            for(int adjNode : adj.get(curr)){
+                indegree[adjNode] -- ; 
+                if(indegree[adjNode] == 0){
+                    q.offer(adjNode); 
+                }
+            }
         }
-        return ans ; 
-
+        return res; 
     }
 }
