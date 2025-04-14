@@ -1,139 +1,152 @@
 //{ Driver Code Starts
-/*package whatever //do not write package name here */
-
-import java.io.*;
-import java.math.*;
+// Initial Template for Java
 import java.util.*;
 
-class GFG {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        int t = Integer.parseInt(sc.nextLine());
-        while (t-- > 0) {
-            String[] words = sc.nextLine().trim().split(" ");
-            int k = Integer.parseInt(sc.nextLine());
-            int n = words.length;
-            Solution ob = new Solution();
-            //  System.out.println(T.findOrder(words,k));
-            String order = ob.findOrder(words, k);
-            if (order.length() == 0) {
-                System.out.println("false");
-                System.out.println("~");
-                continue;
-            }
-            if (order.length() != k) {
-                System.out.println("INCOMPLETE");
-                System.out.println("~");
-                return;
-            }
-            String temp[] = new String[n];
-            for (int i = 0; i < n; i++) temp[i] = words[i];
-
-            Arrays.sort(temp, new Comparator<String>() {
-                @Override
-                public int compare(String a, String b) {
-                    int index1 = 0;
-                    int index2 = 0;
-                    for (int i = 0;
-                         i < Math.min(a.length(), b.length()) && index1 == index2;
-                         i++) {
-                        index1 = order.indexOf(a.charAt(i));
-                        index2 = order.indexOf(b.charAt(i));
-                    }
-
-                    if (index1 == index2) {
-                        return Integer.compare(a.length(), b.length());
-                    }
-
-                    return Integer.compare(index1, index2);
-                }
-            });
-
-            int flag = 1;
-            for (int i = 0; i < n; i++) {
-                if (!words[i].equals(temp[i])) {
-                    flag = 0;
-                    break;
-                }
-            }
-            if (flag == 1)
-                System.out.println("true");
-            else
-                System.out.println("false");
-            System.out.println("~");
-        }
-    }
-}
 
 // } Driver Code Ends
 
-
-// User function Template for Java
-
 class Solution {
-    public List<Integer> topoSort(int n , ArrayList<ArrayList<Integer>> adj){
-        int indegree[] = new int[n]; 
-        
-        for(int  i = 0 ; i<n ; i++){
+    private List<Integer> toposort(int n , List<List<Integer>> adj){
+        int indegree[] = new int[n];
+        for(int i = 0 ; i < n ; i++){
             for(int adjNode : adj.get(i)){
-                indegree[adjNode]++;
+                indegree[adjNode] ++; 
             }
         }
-        
-        Queue<Integer> q = new LinkedList<>() ;
-        for(int i = 0 ; i<n ; i++){
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0 ; i < n ; i++){
             if(indegree[i] == 0){
                 q.offer(i); 
             }
         }
-        List<Integer> ans = new ArrayList<>();
-        
+        List<Integer> res = new ArrayList<>();
         while(!q.isEmpty()){
             int curr = q.poll();
-            ans.add(curr); 
+            res.add(curr);
             for(int adjNode : adj.get(curr)){
-                indegree[adjNode]-- ;
+                indegree[adjNode] --; 
                 if(indegree[adjNode] == 0){
                     q.offer(adjNode); 
                 }
             }
         }
-        return ans ; 
+        return res; 
     }
-    public String findOrder(String[] dict, int k) {
-        int n = dict.length ; 
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>(); 
-       
-        for(int i = 0 ; i<k ; i++){
-            adj.add(new ArrayList<>());    
+    public String findOrder(String[] words) {
+        int n = words.length ; 
+        int k = 26 ;
+        List<List<Integer>> adj = new ArrayList<>();
+        for(int i = 0 ; i < k ; i++){
+            adj.add(new ArrayList<>());
         }
-        
-        for(int i = 0; i<n-1 ; i++){
-            String s1 = dict[i];
-            String s2 = dict[i+1];
-            
-            if (s1.length() > s2.length() && s2.startsWith(s1)) {
-                return ""; // Invalid input case
+        boolean present[] = new boolean[k];
+        for(String word : words){
+            for(char ch : word.toCharArray()){
+                present[ch - 'a'] = true ; 
             }
-            
-            int len = Math.min(s1.length() , s2.length());
-            for(int j = 0 ; j< len ; j++){
+        }
+        for(int i = 0 ; i < n - 1 ; i++){
+            String s1 = words[i];
+            String s2 = words[i+1];
+            if(s1.length() > s2.length() && s1.startsWith(s2)){
+                return ""; 
+            }
+            int len = Math.min(s1.length() , s2.length()); 
+            for(int j = 0 ; j < len ; j++){
                 if(s1.charAt(j) != s2.charAt(j)){
-                    adj.get(s1.charAt(j)-'a').add(s2.charAt(j)-'a'); 
-                    break; 
+                    adj.get(s1.charAt(j) - 'a').add(s2.charAt(j) - 'a'); 
+                    break ; 
                 }
             }
         }
         
-        List<Integer> list = topoSort(k , adj);
-        if (list.size() != k) {
-            return ""; // Cycle detected, no valid ordering
+        List<Integer> topo = toposort(k, adj);
+        StringBuilder str = new StringBuilder();
+        for(int ch : topo){
+            if(present[ch]){
+                str.append((char)(ch+ 'a')); 
+            }
         }
-        StringBuilder ans = new StringBuilder();
-        for(int num : list){
-            ans.append((char)( num + 'a')); 
+        int count = 0 ;  
+        for(boolean b : present){
+            if(b){
+                count ++ ; 
+            }
         }
-        return ans.toString() ; 
+        if(count == str.length()) return str.toString();
+        return "" ; 
     }
 }
+
+
+
+//{ Driver Code Starts.
+
+public class GFG {
+    private static boolean validate(String[] original, String order) {
+        Map<Character, Integer> mp = new HashMap<>();
+        for (String word : original) {
+            for (char ch : word.toCharArray()) {
+                mp.put(ch, 1);
+            }
+        }
+        for (char ch : order.toCharArray()) {
+            if (!mp.containsKey(ch)) {
+                return false;
+            }
+            mp.remove(ch);
+        }
+        if (!mp.isEmpty()) {
+            return false;
+        }
+
+        Map<Character, Integer> indexMap = new HashMap<>();
+        for (int i = 0; i < order.length(); i++) {
+            indexMap.put(order.charAt(i), i);
+        }
+
+        for (int i = 0; i < original.length - 1; i++) {
+            String a = original[i];
+            String b = original[i + 1];
+            int k = 0, n = a.length(), m = b.length();
+
+            while (k < n && k < m && a.charAt(k) == b.charAt(k)) {
+                k++;
+            }
+
+            if (k < n && k < m &&
+                indexMap.get(a.charAt(k)) > indexMap.get(b.charAt(k))) {
+                return false;
+            }
+            if (k != n && k == m) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = Integer.parseInt(sc.nextLine()); // Number of test cases
+
+        while (t-- > 0) {
+            String[] words = sc.nextLine().split(" ");
+            String[] original = Arrays.copyOf(words, words.length);
+
+            Solution ob = new Solution();
+            String order = ob.findOrder(words);
+
+            if (order.isEmpty()) {
+                System.out.println("\"\"");
+            } else {
+                System.out.println(validate(original, order) ? "true" : "false");
+            }
+            System.out.println("~");
+        }
+
+        sc.close();
+    }
+}
+
+// } Driver Code Ends
