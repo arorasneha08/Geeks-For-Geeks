@@ -7,43 +7,44 @@ class DriverClass {
     public static void main(String args[]) throws IOException {
 
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
-        int t = Integer.parseInt(read.readLine());
-        while (t-- > 0) {
-            String str[] = read.readLine().trim().split(" ");
-            int V = Integer.parseInt(str[0]);
-            int E = Integer.parseInt(str[1]);
+        int t = Integer.parseInt(read.readLine().trim());
 
-            // ArrayList<ArrayList<Integer>> edges = new ArrayList<>();
+        while (t-- > 0) {
+
+            int V = Integer.parseInt(read.readLine().trim());
+            int E = Integer.parseInt(read.readLine().trim());
+
             int[][] edges = new int[E][3];
 
-            int i = 0;
-            for (i = 0; i < E; i++) {
-                String S[] = read.readLine().trim().split(" ");
-                int u = Integer.parseInt(S[0]);
-                int v = Integer.parseInt(S[1]);
-                int w = Integer.parseInt(S[2]);
-                // ArrayList<Integer> t1 = new ArrayList<>();
-                // t1.add(u);
-                // t1.add(v);
-                // t1.add(w);
-                // edges.add(t1);
+            for (int i = 0; i < E; i++) {
+                String[] parts = read.readLine().trim().split(" ");
+                int u = Integer.parseInt(parts[0]);
+                int v = Integer.parseInt(parts[1]);
+                int w = Integer.parseInt(parts[2]);
+
                 edges[i][0] = u;
                 edges[i][1] = v;
                 edges[i][2] = w;
             }
 
-            int S = Integer.parseInt(read.readLine());
+            // Read source vertex
+            int S = Integer.parseInt(read.readLine().trim());
 
             Solution ob = new Solution();
-
             int[] ptr = ob.bellmanFord(V, edges, S);
 
-            for (i = 0; i < ptr.length; i++) System.out.print(ptr[i] + " ");
+            // Print the result
+            for (int i = 0; i < ptr.length; i++) {
+                System.out.print(ptr[i] + " ");
+            }
             System.out.println();
+            System.out.println("~");
         }
     }
 }
 // } Driver Code Ends
+
+
 
 
 // User function Template for Java
