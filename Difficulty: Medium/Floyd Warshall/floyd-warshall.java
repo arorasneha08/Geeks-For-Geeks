@@ -17,7 +17,7 @@ class GFG {
                 for (int j = 0; j < n; j++) matrix[i][j] = Integer.parseInt(s[j]);
             }
             Solution obj = new Solution();
-            obj.shortestDistance(matrix);
+            obj.floydWarshall(matrix);
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     System.out.print(matrix[i][j] + " ");
@@ -36,32 +36,14 @@ class GFG {
 // User function template for JAVA
 
 class Solution {
-    public void shortestDistance(int[][] mat) {
-        int n = mat.length ; 
-        
-        for(int i = 0 ; i < n ; i++){
-            for(int j = 0 ; j < n ; j++){
-                if(mat[i][j] == -1){
-                    mat[i][j] = (int) 1e9 ; 
-                }
-                if(i == j){
-                    mat[i][j] = 0 ; 
-                }
-            }
-        }
-        
-        for(int k = 0 ; k < n ; k++){
-            for(int i = 0 ; i < n ; i++){
-                for(int j = 0 ; j < n ;j++){
-                    mat[i][j] = Math.min(mat[i][j] , mat[i][k] + mat[k][j]); 
-                }
-            }
-        }
-        
-        for(int i = 0 ; i < n ; i++){
-            for(int j = 0 ; j < n ; j++){
-                if(mat[i][j] == (int) 1e9){
-                    mat[i][j] = -1 ; 
+    public void floydWarshall(int[][] dist) {
+        int V = dist.length;
+       
+        for (int k = 0; k < V; k++) {
+            for (int i = 0; i < V; i++) {
+                for (int j = 0; j < V; j++) {
+                    if (dist[i][k] < 1e8 && dist[k][j] < 1e8)
+                        dist[i][j] = Math.min(dist[i][k] + dist[k][j], dist[i][j]);
                 }
             }
         }
