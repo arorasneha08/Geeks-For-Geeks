@@ -1,39 +1,38 @@
 //{ Driver Code Starts
-//Initial Template for Java
+// Initial Template for Java
 
-import java.util.*;
-import java.lang.*;
 import java.io.*;
-class GFG
-{
-    public static void main(String[] args) throws IOException
-    {
+import java.lang.*;
+import java.util.*;
+
+class GFG {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = Integer.parseInt(br.readLine().trim());
-        while(T-->0)
-        {
+        while (T-- > 0) {
             int n = Integer.parseInt(br.readLine().trim());
             String s = br.readLine();
             String[] S = s.split(" ");
-            int[] v = new int[n];
-            for(int i = 0; i < n; i++)
-            {
-                v[i] = Integer.parseInt(S[i]);
+            int[] arr = new int[n];
+            for (int i = 0; i < n; i++) {
+                arr[i] = Integer.parseInt(S[i]);
             }
             Solution ob = new Solution();
-           System.out.println(ob.max_xor(v, n));
-            
+            System.out.println(ob.maxXor(arr));
+
+            System.out.println("~");
         }
     }
 }
 
-
 // } Driver Code Ends
 
 
-//User function Template for Java
 
-class Solution{
+
+// User function Template for Java
+
+class Solution {
     class Node{
         Node links[]= new Node[26];
         boolean flag = false ;
@@ -79,10 +78,10 @@ class Solution{
             }
             return maxNum ; 
         }
-        
     }
-    public  int max_xor(int arr[], int n){
-        Trie obj = new Trie();
+    public int maxXor(int[] arr) {
+         Trie obj = new Trie();
+         int n = arr.length ;
         for(int i = 0 ; i < n ; i++){
             obj.insert(arr[i]) ; 
         }
@@ -91,5 +90,6 @@ class Solution{
             xor = Math.max(xor , obj.getMax(arr[i])); 
         }
         return xor ; 
+        
     }
 }
