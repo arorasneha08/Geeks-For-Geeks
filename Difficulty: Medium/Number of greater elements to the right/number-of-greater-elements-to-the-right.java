@@ -33,31 +33,25 @@ System.out.println("~");
 // } Driver Code Ends
 
 
-//User function Template for Java
+// User function Template for Java
 
 class Solution {
-    public static int countNGE(int arr[] , int elem , int index , int n){
-        int count = 0 ;
-        Stack<Integer> st = new Stack<>();
-        for(int i = n-1 ; i >= index ; i--){
-            while(!st.isEmpty() && st.peek() <= arr[i]){
-                st.pop();
+    public static int[] count_NGEs(int N, int arr[], int queries, int indices[]) {
+        int n = arr.length ; 
+        int vals[] = new int[n];
+        int res[] = new int[queries] ;  
+        for(int i = 0 ; i < n ; i++){
+            int count = 0 ; 
+            for(int j = i+1 ; j < n ; j++){
+                if(arr[j] > arr[i]){
+                    count ++ ; 
+                }
             }
-            st.push(arr[i]); 
-            if(arr[i] > elem) {
-                count ++ ; 
-            }
+            vals[i] = count; 
         }
-        return count; 
+        for(int i = 0 ; i < queries; i++){
+            res[i] = vals[indices[i]]; 
+        }
+        return res; 
     }
-  public static int[] count_NGEs(int n, int arr[], int queries, int indices[]) {
-      int res[] = new int[indices.length] ; 
-    for(int i = 0 ; i< indices.length ; i++){
-        int index = indices[i]; 
-        int elem = arr[indices[i]]; 
-        res[i] = countNGE(arr, elem, index, n);
-    }
-    return res ; 
-  }
 }
-     
