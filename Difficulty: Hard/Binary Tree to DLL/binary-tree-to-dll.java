@@ -156,17 +156,37 @@ class Solution {
         res.add(root.data);
         inorderTraversal(root.right, res); 
     }
+    
+    Node d = new Node(-1) ;
+    Node curr = d ; 
+    
+    void func(Node root){
+        if(root == null) return ; 
+        func(root.left) ;
+        
+        curr.right = root ; 
+        root.left = curr; 
+        curr = root ; 
+        
+        func(root.right) ; 
+    }
     Node bToDLL(Node root) {
-        if(root == null) return root; 
-        List<Integer> res = new ArrayList<>(); 
-        inorderTraversal(root, res); 
-        Node head = new Node(res.get(0)); 
-        Node temp = head; 
-        for(int i = 1 ; i< res.size() ; i++){
-            Node node = new Node(res.get(i)); 
-            temp.right = node; 
-            node.left = temp; 
-            temp = node; 
+        // if(root == null) return root; 
+        // List<Integer> res = new ArrayList<>(); 
+        // inorderTraversal(root, res); 
+        // Node head = new Node(res.get(0)); 
+        // Node temp = head; 
+        // for(int i = 1 ; i< res.size() ; i++){
+        //     Node node = new Node(res.get(i)); 
+        //     temp.right = node; 
+        //     node.left = temp; 
+        //     temp = node; 
+        // }
+        // return head; 
+        func(root); 
+        Node head = d.right ; 
+        if(head != null){
+            head.left = null;
         }
         return head; 
     }
