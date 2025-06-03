@@ -1,25 +1,3 @@
-//{ Driver Code Starts
-// Initial Template for Java
-
-import java.io.*;
-import java.util.*;
-
-class GfG {
-    public static void main(String[] args) {
-
-        Scanner sc = new Scanner(System.in);
-        int t = sc.nextInt();
-
-        while (t-- > 0) {
-            String s = sc.next();
-            int k = sc.nextInt();
-            System.out.println(new Solution().countSubstr(s, k));
-
-            System.out.println("~");
-        }
-    }
-}
-// } Driver Code Ends
 
 
 // User function Template for Java
