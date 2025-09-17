@@ -1,58 +1,35 @@
-//{ Driver Code Starts
-import java.io.*;
-import java.util.*;
-
-class GFG {
-    public static void main(String args[]) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        PrintWriter out = new PrintWriter(System.out);
-        int t = Integer.parseInt(in.readLine());
-        while (t-- > 0) {
-            String s = in.readLine();
-
-            Solution ob = new Solution();
-            out.println(ob.decodeString(s));
-
-            out.println("~");
-        }
-        out.close();
-    }
-}
-// } Driver Code Ends
-
-
-
 class Solution {
     static String decodeString(String s) {
         int n = s.length(); 
-        Stack<StringBuilder> stringStack = new Stack<>() ;
-        Stack<Integer> countStack = new Stack<>(); 
-        StringBuilder currStr = new StringBuilder(); 
+        Stack<Integer> count = new Stack<>();
+        Stack<String> str = new Stack<>();
         int num = 0 ; 
+        String curr = "" ; 
         
-        for(char ch : s.toCharArray()){
+        for(int i = 0 ; i < n ; i++){
+            char ch = s.charAt(i); 
             if(Character.isDigit(ch)){
-                num = num * 10 + (ch - '0') ; 
+                num = num * 10 + ch - '0'; 
             }
             else if(ch == '['){
-                countStack.push(num); 
-                stringStack.push(currStr); 
-                num = 0 ; 
-                currStr = new StringBuilder() ; 
+                count.push(num); 
+                str.push(curr); 
+                num = 0  ;
+                curr = ""; 
             }
             else if(ch == ']'){
-                StringBuilder decodedString = stringStack.pop();
-                int repeat = countStack.pop();
-
-                for(int i = 0 ; i < repeat ; i++){
-                    decodedString.append(currStr); 
+                int cnt = count.pop(); 
+                String prev = str.pop(); 
+                String newStr = "" ;
+                for(int j = 0 ; j < cnt ; j++){
+                    newStr += curr; 
                 }
-                currStr = decodedString ; 
+                curr = prev + newStr ; 
             }
             else{
-                currStr.append(ch); 
+                curr += ch ; 
             }
         }
-        return currStr.toString(); 
+        return curr;  
     }
 }
