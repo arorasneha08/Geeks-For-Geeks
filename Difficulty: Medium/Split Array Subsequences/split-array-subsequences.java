@@ -1,30 +1,39 @@
 class Solution {
+
     public boolean isPossible(int[] arr, int k) {
-        Map<Integer, Integer> freq = new HashMap<>();
-        Map<Integer, Integer> end = new HashMap<>();
-         
-        for (int n : arr) freq.put(n, freq.getOrDefault(n, 0) + 1);
-         
-        for (int n : arr) {
-            if (freq.get(n) == 0) continue;
-            if (end.getOrDefault(n - 1, 0) > 0) {
-                end.put(n - 1, end.get(n - 1) - 1);
-                end.put(n, end.getOrDefault(n, 0) + 1);
-                freq.put(n, freq.get(n) - 1);
+        if (k <= 1) return true; 
+        int n = arr.length;
+        if (n < k) return false;
+
+        Map<Integer, Integer> count = new HashMap<>();
+        for (int x : arr) count.put(x, count.getOrDefault(x, 0) + 1);
+
+        Map<Integer, Integer> tails = new HashMap<>(); 
+
+        for (int num : arr) {
+            if (count.getOrDefault(num, 0) == 0) continue;
+
+            if (tails.getOrDefault(num - 1, 0) > 0) {
+                tails.put(num - 1, tails.get(num - 1) - 1);
+                tails.put(num, tails.getOrDefault(num, 0) + 1);
+                count.put(num, count.get(num) - 1);
             } else {
                 boolean canStart = true;
-                for (int i = n; i < n + k; i++) {
-                    if (freq.getOrDefault(i, 0) <= 0) {
+                for (int i = 0; i < k; i++) {
+                    int cur = num + i;
+                    int c = count.getOrDefault(cur, 0);
+                    if (c <= 0) { 
                         canStart = false;
                         break;
                     }
+                    count.put(cur, c - 1);
                 }
-                 
                 if (!canStart) return false;
-                for (int i = n; i < n + k; i++) freq.put(i, freq.get(i) - 1);
-                end.put(n + k - 1, end.getOrDefault(n + k - 1, 0) + 1);
+                int end = num + k - 1;
+                tails.put(end, tails.getOrDefault(end, 0) + 1);
             }
         }
+
         return true;
     }
 }
