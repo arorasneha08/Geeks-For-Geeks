@@ -1,60 +1,41 @@
-//{ Driver Code Starts
-import java.io.*;
-import java.lang.*;
-import java.util.*;
-
-class GFG {
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int t = Integer.parseInt(br.readLine().trim());
-        while (t-- > 0) {
-            System.out.println(new Solution().infixToPostfix(br.readLine().trim()));
-
-            System.out.println("~");
-        }
-    }
-}
-// } Driver Code Ends
-
-
 class Solution {
-    public static int checkPriority(char ch){
-        if(ch == '+' || ch == '-') return 1; 
+    private static int precedence(char ch){
+        if(ch == '+' || ch == '-') return 1 ; 
         else if(ch == '*' || ch == '/') return 2 ; 
-        else if(ch == '^') return 3 ;
-        return -1 ; 
+        else if(ch == '^') return 3 ; 
+        return 0 ; 
     }
     public static String infixToPostfix(String s) {
-        Stack<Character> st = new Stack<>(); 
-        int n = s.length() ; 
-        String ans = "" ; 
+        int n = s.length(); 
+        Stack<Character> st = new Stack<>();
+        StringBuilder str = new StringBuilder(); 
         for(int i = 0 ; i < n ; i++){
             char ch = s.charAt(i); 
-            if((ch >= 'A' && ch <= 'Z')|| (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9')){
-                ans += ch ; 
+            if((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') 
+            || (ch >= '0' && ch <= '9')){
+                str.append(ch); 
             }
             else if(ch == '('){
-                st.push(ch); 
+                st.push(ch) ; 
             }
             else if(ch == ')'){
-                while(!st.isEmpty() && st.peek()!= '('){
-                    ans += st.peek() ;
-                    st.pop(); 
+                while(!st.isEmpty() && st.peek() != '('){
+                    str.append(st.pop()); 
                 }
                 st.pop(); 
             }
             else {
-                while(!st.isEmpty() && checkPriority(ch) <= checkPriority(st.peek())){
-                    ans += st.peek();
-                    st.pop(); 
+                while (!st.isEmpty() && 
+                       (precedence(st.peek()) > precedence(ch) || 
+                       precedence(st.peek()) == precedence(ch) && ch != '^')) {
+                    str.append(st.pop());
                 }
-                st.push(ch); 
+                st.push(ch);
             }
         }
         while(!st.isEmpty()){
-            ans += st.pop(); 
+            str.append(st.pop()); 
         }
-        return ans ; 
+        return str.toString(); 
     }
 }
