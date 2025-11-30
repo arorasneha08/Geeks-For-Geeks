@@ -1,33 +1,4 @@
-//{ Driver Code Starts
-import java.util.*;
-
-class suffix
-{
-     int index;  
-    int rank[] = new int[2];
-}
-
-class UniqueSubStr
-{
-    public static void main (String[] args) {
-        Scanner sc= new Scanner(System.in);
-        int t = sc.nextInt();
-        
-        while(t-- > 0)
-        {
-            String st = sc.next();
-            GfG g = new GfG();
-            System.out.println(g.countDistinctSubstring(st));
-        
-System.out.println("~");
-}
-    }
-}
-// } Driver Code Ends
-
-
-/*You are required to complete this method */
-class GfG {
+class Solution {
     public static class Node{
         Node links[] = new Node[26]; 
         boolean flag = false; 
@@ -42,7 +13,7 @@ class GfG {
             links[ch - 'a'] = node; 
         }
     }
-   public static int countDistinctSubstring(String s){
+   public static int countSubs(String s){
         int count = 0 ; 
         int n = s.length(); 
         Node root =  new Node(); 
@@ -56,6 +27,6 @@ class GfG {
                 node = node.get(s.charAt(j)); 
             }
         }
-        return count + 1 ; 
+        return count; 
    }
 }
