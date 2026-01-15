@@ -1,54 +1,28 @@
-//{ Driver Code Starts
-// Initial Template for Java
-
-import java.io.*;
-import java.lang.*;
-import java.math.*;
-import java.util.*;
-
-class GFG {
-    public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        int T = Integer.parseInt(sc.nextLine());
-        while (T-- > 0) {
-            String[] arr1Str = sc.nextLine().split(" ");
-            int[] arr = Arrays.stream(arr1Str).mapToInt(Integer::parseInt).toArray();
-            Solution obj = new Solution();
-            int ans = obj.minCandy(arr);
-            System.out.println(ans);
-            System.out.println("~");
-        }
-    }
-}
-
-// } Driver Code Ends
-
 class Solution {
-    static int minCandy(int arr[]) {
-        int n = arr.length  ;
-        int candy = n ;
-        int i = 1 ; 
+    public int minCandy(int arr[]) {
+        // code here
+        int n = arr.length;
         
-        while(i < n){
-            if(arr[i] == arr[i-1]) {
-                i++ ; 
-                continue ; 
-            }
-            int peak = 0 ; 
-            while(i < n && arr[i] > arr[i-1]){
-                peak ++ ;
-                candy += peak ; 
-                i++ ; 
-                if(i == n) return candy ; 
-            }
-            int dip = 0 ;
-            while(i < n && arr[i] < arr[i-1]){
-                dip ++ ;
-                candy += dip ;
-                i++ ; 
-            }
-            candy -= Math.min(peak , dip);
+        int[] nums=new int[n];
+        
+        Arrays.fill(nums,1);
+         
+        for(int i =1;i<n;i++){
+            if(arr[i]>arr[i-1])
+                nums[i]=nums[i-1]+1;
         }
-        return candy ; 
+        
+        for(int i =n-2;i>=0;i--){
+            if(arr[i]>arr[i+1])
+                nums[i]=Math.max(nums[i],nums[i+1]+1);
+        }
+        
+        int candysum =0;
+        
+        for(int x:nums){
+            candysum +=x;
+        }
+        
+        return candysum;
     }
 }
