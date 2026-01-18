@@ -1,5 +1,5 @@
 class Solution {
-    public ArrayList<Integer> findGreater(int[] arr) {
+    public ArrayList<Integer> nextFreqGreater(int[] arr) {
         int n = arr.length ; 
         ArrayList<Integer> res = new ArrayList<>();
         int ans[] = new int[n]; 
