@@ -1,42 +1,36 @@
-import java.util.*;
-
 class Solution {
-    public class Pair implements Comparable<Pair> {
-        int val;
-        int freq;
-
-        Pair(int val, int freq) {
-            this.val = val;
+    public class Pair implements Comparable<Pair>{
+        int node; 
+        int freq ; 
+        Pair(int node , int freq){
+            this.node = node; 
             this.freq = freq;
         }
-
-        public int compareTo(Pair other) {
-            // for min-heap (lower freq first)
-            if (this.freq == other.freq) {
-                return this.val - other.val; 
+        public int compareTo(Pair other){
+            if(this.freq == other.freq){
+                return other.node - this.node; 
             }
-            return this.freq - other.freq;
+            return other.freq - this.freq ;
         }
     }
-
     public ArrayList<Integer> topKFreq(int[] arr, int k) {
-        HashMap<Integer, Integer> mpp = new HashMap<>();
-        for (int num : arr) {
-            mpp.put(num, mpp.getOrDefault(num, 0) + 1);
+        int n = arr.length ;  
+        ArrayList<Integer> res = new ArrayList<>(); 
+        PriorityQueue<Pair> pq = new PriorityQueue<>(); 
+        HashMap<Integer , Integer> mpp = new HashMap<>(); 
+        
+        for(int num : arr){
+            mpp.put(num , mpp.getOrDefault(num , 0) + 1); 
         }
-
-        PriorityQueue<Pair> pq = new PriorityQueue<>(); // min-heap
-
-        for (Map.Entry<Integer, Integer> entry : mpp.entrySet()) {
-            pq.offer(new Pair(entry.getKey(), entry.getValue()));
-            if (pq.size() > k) pq.poll(); // keep only top k
+        for(Map.Entry<Integer , Integer> entry : mpp.entrySet()){
+            int key = entry.getKey(); 
+            int val = entry.getValue(); 
+            pq.offer(new Pair(key , val)); 
         }
-
-        ArrayList<Integer> res = new ArrayList<>();
-        while (!pq.isEmpty()) {
-            res.add(pq.poll().val);
+        while(!pq.isEmpty() && k > 0){
+            res.add(pq.poll().node);
+            k--;
         }
-        Collections.reverse(res); // optional, to have highest freq first
-        return res;
+        return res; 
     }
 }
