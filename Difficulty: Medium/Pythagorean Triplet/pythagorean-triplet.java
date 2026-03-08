@@ -1,18 +1,21 @@
 class Solution {
     boolean pythagoreanTriplet(int[] arr) {
-        int n = arr.length ; 
-        HashSet<Integer> set = new HashSet();
-        for(int i = 0 ; i < n ; i++){
-            set.add(arr[i] * arr[i]); 
+        // code here
+        
+        
+        Set<Integer> set = new HashSet<>();
+
+         // You can also take an additional array with length max(array_elements)+1     
+        for(int i: arr)
+          set.add(i*i);
+        
+        for(int i=0; i<arr.length-1;  i++){
+           for(int j=i+1; j<arr.length; j++)
+           
+              if(set.contains(arr[i]*arr[i] + arr[j]*arr[j]))
+                return true;
         }
-        for(int i = 0 ; i < n ; i++){
-            for(int j = i+1 ; j < n ; j++){
-                int sum = arr[i]* arr[i]  + arr[j] * arr[j]; 
-                if(set.contains(sum)){
-                    return true ; 
-                }
-            }
-        }
-        return false; 
+        
+        return false;
     }
 }
