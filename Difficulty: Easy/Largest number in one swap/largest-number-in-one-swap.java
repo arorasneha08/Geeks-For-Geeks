@@ -1,25 +1,35 @@
 class Solution {
     public String largestSwap(String s) {
-        char[] ch = s.toCharArray();
-        int n = ch.length;
+        int n = s.length(); 
+        int idx1 = -1;
+        int idx2 = -1; 
+        int i = n - 1;
 
-        // last[d] = last index where digit d appears
-        int[] last = new int[10];
-        for (int d = 0; d < 10; d++) last[d] = -1;
-        for (int i = 0; i < n; i++) last[ch[i] - '0'] = i;
+        for(int j = n - 1; j >= 0; j--){
+            char ch1 = s.charAt(j); 
+            char ch2 = s.charAt(i); 
 
-        // For each digit from left to right, try to swap with the largest possible digit (9..cur+1)
-        for (int i = 0; i < n; i++) {
-            int cur = ch[i] - '0';
-            for (int d = 9; d > cur; d--) {
-                if (last[d] > i) { // found a larger digit that occurs later
-                    char tmp = ch[i];
-                    ch[i] = ch[last[d]];
-                    ch[last[d]] = tmp;
-                    return new String(ch);
-                }
+            if(ch1 == ch2) continue; 
+
+            if(ch1 > ch2){
+                i = j;
+            }
+            else{
+                idx1 = i; 
+                idx2 = j; 
             }
         }
-        return new String(ch);
+
+        if(idx1 == -1){
+            return s;
+        }
+
+        char[] chs = s.toCharArray();
+
+        char temp = chs[idx1];
+        chs[idx1] = chs[idx2];
+        chs[idx2] = temp;
+
+        return new String(chs);
     }
 }
