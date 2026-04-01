@@ -1,5 +1,3 @@
-// User function Template for Java
-
 class Solution {
     int countStrings(int n) {
         int a = 2 ; 
