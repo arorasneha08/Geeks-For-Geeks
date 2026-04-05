@@ -1,32 +1,3 @@
-//{ Driver Code Starts
-//Initial Template for JAVA
-
-import java.io.*;
-import java.util.*;
-
-class GFG {
-    public static void main(String args[]) throws IOException {
-        BufferedReader read =
-            new BufferedReader(new InputStreamReader(System.in));
-        int t = Integer.parseInt(read.readLine());
-        while (t-- > 0) {
-            int N = Integer.parseInt(read.readLine());
-            
-            String S[] = read.readLine().split(" ");
-            
-            int[] A = new int[N];
-            
-            for(int i=0 ; i<N ; i++){
-                A[i] = Integer.parseInt(S[i]);
-            }
-            int target = Integer.parseInt(read.readLine());
-
-            Solution ob = new Solution();
-            System.out.println(ob.findTargetSumWays(N,A, target));
-        }
-    }
-}
-// } Driver Code Ends
 
 
 //User function Template for Java
@@ -49,17 +20,53 @@ class Solution {
         }
         return dp[index][target] = (pick + notpick)% mod ;
     }
-    static int findTargetSumWays(int n, int[] arr ,int k) {
+    static int totalWays(int[] arr ,int k) {
+        int n = arr.length ; 
         int sum =  0; 
         for(int num : arr){
             sum += num ; 
         }
-        if(sum - k < 0 || (sum - k) % 2 == 1) return 0; 
+        if((sum - k )< 0 || (sum - k) % 2 != 0) return 0; 
         int target = (sum - k )/2 ; 
         int dp[][] = new int[n][target+1]; 
-        for(int row[] : dp){
-            Arrays.fill(row , -1) ;
+        // for(int row[] : dp){
+        //     Arrays.fill(row , -1) ;
+        // }
+        // return func(n-1 , target , arr , dp) ;
+        
+        // for(int i = 0 ; i < n ; i++){
+        //     dp[i][0] = 1 ;
+        // }
+        // if(arr[0] <= target) dp[0][arr[0]] = 1; 
+        // for(int idx = 1 ; idx <n ;idx++){
+        //     for(int tar = 0 ; tar <= target ; tar++){
+        //         int notpick = dp[idx-1][tar] ;
+        //         int pick = 0; 
+        //         if(arr[idx] <= tar){
+        //             pick = dp[idx-1][tar-arr[idx]]; 
+        //         }
+        //         dp[idx][tar] = (pick + notpick) % mod; 
+        //     }
+        // }
+        // return dp[n-1][target] ; 
+        
+        int prev[] = new int[target+1]; 
+        for(int i = 0 ; i < n ; i++){
+            prev[0] = 1 ;
         }
-        return func(n-1 , target , arr , dp) ;
+        if(arr[0] <= target) prev[arr[0]] = 1; 
+        for(int idx = 1 ; idx <n ;idx++){
+            int curr[] = new int[target+1]; 
+            for(int tar = 0 ; tar <= target ; tar++){
+                int notpick = prev[tar] ;
+                int pick = 0; 
+                if(arr[idx] <= tar){
+                    pick = prev[tar-arr[idx]]; 
+                }
+                curr[tar] = (pick + notpick) % mod; 
+            }
+            prev = curr; 
+        }
+        return prev[target] ; 
     }
 };
