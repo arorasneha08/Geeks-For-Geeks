@@ -1,41 +1,66 @@
-// User function Template for Java
-
 class Solution {
-    private static long gcd(long x , long y){
-        if(y == 0) return x;  
-        return gcd(y , x % y); 
-    }
-    private static long lcm(long x , long y){
-        return x * y / gcd(x,y) ; 
-    }
-    private static long query(int idx , int low , int high , int left , int right , long st[]){
-        if(high < left || right < low) return 0 ; 
-        if(left <= low && high <= right){
-            return st[idx]; 
+    public ArrayList<Long> RangeLCMQuery(int[] arr, int[][] queries) {
+        SegmentTree st = new SegmentTree(arr);
+        ArrayList<Long> result = new ArrayList<>();
+        
+        for (int[] q : queries) {
+            if (q[0] == 1) {
+                st.update(q[1], q[2], 0, arr.length - 1, 1);
+            } else {
+                result.add(st.query(q[1], q[2], 0, arr.length - 1, 1));
+            }
         }
-        int mid = low + (high - low)/2 ; 
-        return lcm(query(2 * idx + 1 , low , mid , left , right , st) , query(2 * idx + 2 , mid + 1 , high , left , right , st));
+        return result;
     }
-    public static long getLCM(long st[], long arr[], int n, int qs, int qe) {
-        return query(0 , 0 , n-1 , qs, qe, st); 
+}
+
+class SegmentTree {
+    int n;
+    long[] tree;
+
+    SegmentTree(int[] arr) {
+        n = arr.length;
+        tree = new long[4 * n];
+        build(arr, 0, n - 1, 1);
     }
 
-    public static void updateValue(long arr[], long st[], int n, int index, long new_val) {
-        update(0 , 0 , n-1 , index , new_val , st); 
-        arr[index] = new_val ; 
+    private long gcd(long a, long b) {
+        return b == 0 ? a : gcd(b, a % b);
     }
-    private static void update(int idx , int low , int high , int pos , long val, long st[]){
-        if(low == high){
-            st[idx] = val; 
-            return; 
+
+    private long lcm(long a, long b) {
+        if (a == 0 || b == 0) return Math.max(a, b);
+        return (a / gcd(a, b)) * b;
+    }
+
+    private void build(int[] arr, int l, int r, int idx) {
+        if (l == r) {
+            tree[idx] = arr[l];
+            return;
         }
-        int mid = low + (high - low)/2;  
-        if(pos <= mid){
-            update(2 * idx + 1 , low , mid , pos , val , st); 
+        int mid = (l + r) / 2;
+        build(arr, l, mid, 2 * idx);
+        build(arr, mid + 1, r, 2 * idx + 1);
+        tree[idx] = lcm(tree[2 * idx], tree[2 * idx + 1]);
+    }
+
+    public void update(int pos, int val, int l, int r, int idx) {
+        if (l == r) {
+            tree[idx] = val;
+            return;
         }
-        else{
-            update(2 * idx + 2 , mid + 1 , high , pos , val , st); 
-        }
-        st[idx] = lcm(st[2 * idx + 1 ] , st[2 * idx + 2]); 
+        int mid = (l + r) / 2;
+        if (pos <= mid) update(pos, val, l, mid, 2 * idx);
+        else update(pos, val, mid + 1, r, 2 * idx + 1);
+        tree[idx] = lcm(tree[2 * idx], tree[2 * idx + 1]);
+    }
+
+    public long query(int ql, int qr, int l, int r, int idx) {
+        if (qr < l || ql > r) return 1; 
+        if (ql <= l && r <= qr) return tree[idx];
+        int mid = (l + r) / 2;
+        long left = query(ql, qr, l, mid, 2 * idx);
+        long right = query(ql, qr, mid + 1, r, 2 * idx + 1);
+        return lcm(left, right);
     }
 }
